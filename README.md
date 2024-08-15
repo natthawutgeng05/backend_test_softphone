@@ -148,3 +148,139 @@ export default RecentCalls;
 ### Additional Notes
 - Replace http://localhost:5000 with the actual base URL of your backend server if it's hosted elsewhere.
 - Ensure proper error handling in your frontend application to manage possible network or server errors.
+
+## For Axios
+CRUD operations using axios with your API.
+
+### Recent Calls API Integration Guide (Using Axios)
+This section provides instructions on how to use the API endpoints for managing recent calls with axios. The API supports Create, Read, Update, and Delete (CRUD) operations.
+
+1. Create a New Recent Call
+- Endpoint: POST /api/recentCalls
+- Description: Creates a new recent call entry in the database.
+- Request Body: A JSON object containing the call details.
+- Response: Returns the JSON object of the created call.
+
+```js
+import axios from 'axios';
+
+const createRecentCall = async () => {
+    const newCall = {
+        id: '12345',
+        name: {
+            displayName: 'John Doe',
+            date: new Date().toISOString(),
+            status: 'call',
+        },
+        target: 'John Doe'
+    };
+
+    try {
+        const response = await axios.post('http://localhost:5000/api/recentCalls', newCall);
+        console.log('New call created:', response.data);
+    } catch (error) {
+        console.error('Error creating recent call:', error);
+    }
+};
+
+createRecentCall();
+```
+2. Retrieve All Recent Calls
+- Endpoint: GET /api/recentCalls
+- Description: Fetches a list of all recent calls stored in the database.
+- Response: Returns an array of JSON objects, each representing a recent call.
+
+Example Usage:
+```js
+import axios from 'axios';
+
+const fetchAllRecentCalls = async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/recentCalls');
+        console.log('All recent calls:', response.data);
+    } catch (error) {
+        console.error('Error fetching recent calls:', error);
+    }
+};
+
+fetchAllRecentCalls();
+```
+3. Retrieve a Specific Recent Call by ID
+- Endpoint: GET /api/recentCalls/:id
+- Description: Fetches the details of a specific recent call by its ID.
+- Parameters:
+  - `:id` - The unique identifier of the recent call you want to retrieve.
+- Response: Returns a JSON object representing the specific recent call.
+
+Example Usage:
+```js
+import axios from 'axios';
+
+const fetchRecentCallById = async (id) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/recentCalls/${id}`);
+        console.log(`Recent call with ID ${id}:`, response.data);
+    } catch (error) {
+        console.error(`Error fetching recent call with ID ${id}:`, error);
+    }
+};
+
+fetchRecentCallById('your-call-id-here');
+```
+4. Update a Specific Recent Call by ID
+- Endpoint: PUT /api/recentCalls/:id
+- Description: Updates the details of a specific recent call in the database.
+- Parameters:
+    - :id - The unique identifier of the recent call you want to update.
+- Request Body: A JSON object containing the updated call details.
+- Response: Returns the JSON object of the updated call.
+
+Example Usage:
+```js
+import axios from 'axios';
+
+const updateRecentCallById = async (id) => {
+    const updatedCall = {
+        name: {
+            displayName: 'John Doe Updated',
+            date: new Date().toISOString(),
+            status: 'call',
+        },
+        target: 'John Doe Updated'
+    };
+
+    try {
+        const response = await axios.put(`http://localhost:5000/api/recentCalls/${id}`, updatedCall);
+        console.log(`Updated call with ID ${id}:`, response.data);
+    } catch (error) {
+        console.error(`Error updating recent call with ID ${id}:`, error);
+    }
+};
+
+updateRecentCallById('your-call-id-here');
+```
+5. Delete a Specific Recent Call by ID
+- Endpoint: DELETE /api/recentCalls/:id
+- Description: Deletes a specific recent call from the database.
+- Parameters:
+    - `:id` - The unique identifier of the recent call you want to delete.
+- Response: Returns a JSON object with a success message.
+
+Example Usage:
+```js
+import axios from 'axios';
+
+const deleteRecentCallById = async (id) => {
+    try {
+        const response = await axios.delete(`http://localhost:5000/api/recentCalls/${id}`);
+        console.log(`Delete message:`, response.data.message);
+    } catch (error) {
+        console.error(`Error deleting recent call with ID ${id}:`, error);
+    }
+};
+
+deleteRecentCallById('your-call-id-here');
+```
+### Additional Notes
+- Replace http://localhost:5000 with the actual base URL of your backend server if it's hosted elsewhere.
+- Ensure proper error handling in your frontend application to manage possible network or server errors.
