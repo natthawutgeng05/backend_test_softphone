@@ -37,7 +37,12 @@ router.get("/:id", async (req, res) => {
 // PUT: Update a specific contact by ID
 router.put("/:id", async (req, res) => {
   try {
-    const updatedContact = await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedContact = await Contact.findOneAndUpdate(
+      { id: req.params.id }, // ค้นหาตาม id ที่เป็น custom field
+      req.body, // ข้อมูลที่ต้องการอัปเดต
+      { new: true } // ส่งคืนข้อมูลหลังจากอัปเดต
+    );
+    
     if (!updatedContact) return res.status(404).json({ message: "Contact not found" });
     res.json(updatedContact);
   } catch (error) {
@@ -55,5 +60,29 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// GET: Retrieve a specific contact by custom ID (not MongoDB _id)
+router.get('/by-id/:id', async (req, res) => {
+  try {
+      const contact = await Contact.findOne({ id: req.params.id });
+      if (!contact) return res.status(404).json({ message: "Contact not found" });
+      res.json(contact);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+});
+
+// DELETE: Delete a specific contact by custom ID (not MongoDB _id)
+router.delete("/by-id/:id", async (req, res) => {
+  try {
+    const deletedContact = await Contact.findOneAndDelete({ id: req.params.id });
+    
+    if (!deletedContact) return res.status(404).json({ message: "Contact not found" });
+    res.json({ message: "Contact deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 module.exports = router;
